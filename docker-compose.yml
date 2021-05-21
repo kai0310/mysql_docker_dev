@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  app:
+    build: ./infra/php
+    volumes:
+      - ./backend:/work
+
+  web:
+    image: nginx:1.18-alpine
+    ports:
+      - 10080:80
+    volumes:
+      - ./backend:/work
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /work
+
+  db:
+    build: ./infra/mysql
+    volumes:
+      - db-store:/var/lib/mysql
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=phper
+      - PMA_PASSWORD=secret
+    ports:
+      - 8080:80
+    volumes:
+      - pma-session-store:/sessions
+
+volumes:
+  db-store:
+  pma-session-store:
+

@@ -1,0 +1,2 @@
+# mysql_docker_dev
+ MySQLとPHPをDocker上で動かすための最小サンプル
